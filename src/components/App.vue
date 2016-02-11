@@ -11,8 +11,9 @@
 </template>
 
 <style>
+
   .header {
-    border-bottom: 3px solid #fea;
+    border-bottom: 2px solid #fea;
     background-color: #fffbec;
     padding-bottom: 5px;
     padding-top: 5px;

@@ -1,7 +1,9 @@
 <template>
-  <div class="preview">
-    {{ truncated }}
-  </div>
+  <a v-link="{ path: '/note/' + index }">
+    <div class="preview">
+      {{ truncated }}
+    </div>
+  </a>
 </template>
 
 <script>
@@ -10,7 +12,8 @@ export default {
   name: 'Preview',
 
   props: {
-    text: String
+    text: String,
+    index: Number
   },
 
   computed: {
