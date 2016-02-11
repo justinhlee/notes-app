@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row">
         <div class="eight offset-by-two columns">
-          <a v-link="{ path: '/' }">< BACK</a>
+          <a v-link="{ path: '/' }">BACK</a>
           <hr>
         </div>
       </div>
@@ -23,6 +23,13 @@ export default {
 
   name: 'NoteView',
 
+  props: {
+    notes: {
+      Object,
+      required: true
+    }
+  },
+
   data () {
     return {
       text: '',
@@ -31,23 +38,35 @@ export default {
   },
 
   route: {
+    canActivate ({ to, abort, next }) {
+      let ind = +to.params.index
+      if (ind < 0) abort()
+      let n = store.fetch().length
+      // prevents people from entering inaccessible notes via url
+      n - ind >= 0 ? next() : abort()
+    },
+
     data ({ to }) {
       let ind = to.params.index
+      let note = this.notes[ind]
+      let body = ''
+      note ? body = note.text : body = this.text
       return {
-        text: store.fetch()[ind].text,
+        text: body,
         index: ind
       }
     }
   },
 
   methods: {
-    // good place to figure out lazier solution, cache then update on close/back ?
     update () {
-      let notes = store.fetch()
-      notes[this.index] = {text: this.text}
-      store.save(notes)
+      // checks for edge case where someone refreshes NoteView on nonexisting index
+      // ... admittedly hacky and probably smarter to just rethink the routing
+      if (this.notes.length - this.index >= 0 && this.index > -1) {
+        this.$dispatch('update', { text: this.text, index: this.index})
+      }
     }
-  },
+  }
 }
 </script>
 
@@ -55,6 +74,7 @@ export default {
   .note-view {
     padding-top: 25px;
   }
+
   textarea {
     font-family: 'Inconsolata', sans-serif;
     font-size: 14px;

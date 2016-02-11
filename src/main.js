@@ -13,8 +13,9 @@ router.map({
     component: ListView
   },
   '/note/:index': {
+    name: 'note',
     component: NoteView
-  },
+  }
 })
 
 router.start(App, '#app')

@@ -4,8 +4,13 @@
     <div class="container">
       <div class="row">
         <div class="eight offset-by-two columns">
-          
-          <preview v-for="note in notes":text="note.text":index="$index">
+
+          <center>
+            <!-- adds a new note, +1 to length of notes array -->
+            <button v-link="{ name: 'note', params: { index: count }}" >+</button>
+          </center>
+
+          <preview v-for="note in notes":note="note":text="note.text":index="$index"track-by="$index">
           </preview>
           
         </div>
@@ -15,7 +20,6 @@
 </template>
 
 <script>
-import store from '../store.js'
 import Preview from './Preview.vue'
 
 export default {
@@ -26,10 +30,12 @@ export default {
     Preview
   },
 
-  data () {
-    return {
-      notes: store.fetch()
-    }
+  props: {
+    notes: {
+      Object,
+      required: true
+    },
+    count: Number
   }
 }
 </script>

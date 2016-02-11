@@ -2,13 +2,55 @@
   <!-- header -->
   <div class="header">
     <div class="container">
+      <div class="row">
       <center><span class="header-icon">¶</span></center>
+      </div>
+      
     </div>
   </div>
-
+ 
   <!-- main view -->
-  <router-view></router-view>
+  <router-view :notes="notes":count="count"></router-view>
 </template>
+
+<script>
+import store from '../store.js'
+
+export default {
+
+  name: 'App',
+
+  data () {
+    return {
+      notes: store.fetch(),
+      count: store.fetch().length
+    }
+  },
+
+  watch: {
+    // watch this.notes for removals
+    notes: {
+      handler: function (notes) {
+        store.save(notes);
+        this.count = store.fetch().length
+      },
+      deep: true
+    }
+  },
+
+  events: {
+    update (note) {
+      this.notes[note.index] = {text: note.text}
+      store.save(this.notes)
+      this.count = store.fetch().length
+    },
+
+    remove (note) {
+      this.notes.$remove(note)
+    }
+  },
+}
+</script>
 
 <style>
 

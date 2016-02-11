@@ -1,17 +1,28 @@
 <template>
-  <a v-link="{ path: '/note/' + index }">
+  
     <div class="preview">
-      {{ truncated }}
+    
+      <div v-link="{ path: '/note/' + index }" class="inner-preview">
+        {{ truncated }}
+      </div>
+
+      <!-- on delete remove from store -->
+      <a style="cursor:pointer;" v-on:click="remove">delete</a>
     </div>
-  </a>
+
 </template>
 
 <script>
+
 export default {
 
   name: 'Preview',
 
   props: {
+    note: {
+      Object,
+      required: true
+    },
     text: String,
     index: Number
   },
@@ -23,6 +34,13 @@ export default {
       const max = 50
       return len > max ? txt.substring(0, max) + '...' : txt
     }
+  },
+
+  methods: {
+    // tells parent app to remove the note
+    remove () {
+      this.$dispatch('remove', this.note)
+    }
   }
 
 }
@@ -31,10 +49,14 @@ export default {
 
 <style>
   .preview {
+    margin-bottom: 25px;
+  }
+
+  .inner-preview {
     font-family: 'Inconsolata', sans-serif;
     font-size: 14px;
-    padding: 10px;
     border:1px solid #eee;
-    margin-bottom: 10px;
+    padding: 10px;
+    cursor: pointer;
   }
 </style>
