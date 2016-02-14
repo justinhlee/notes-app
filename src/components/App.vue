@@ -3,14 +3,19 @@
   <div class="header">
     <div class="container">
       <div class="row">
-      <center><span class="header-icon">¶</span></center>
+        <div class="two offset-by-two columns">
+          <a class="back nav-button" v-show="viewing" v-link="{ path: '/' }">BACK</a>
+          <div v-else>
+            <a class="nav-button" v-show="deleting" v-on:click="toggle">CANCEL</a>
+            <a class="nav-button" v-else v-on:click="toggle">EDIT</a>
+          </div>
+        </div>
       </div>
-      
     </div>
   </div>
- 
+
   <!-- main view -->
-  <router-view :notes="notes":count="count"></router-view>
+  <router-view :notes="notes":count="count":deleting="deleting"></router-view>
 </template>
 
 <script>
@@ -23,7 +28,9 @@ export default {
   data () {
     return {
       notes: store.fetch(),
-      count: store.fetch().length
+      count: store.fetch().length,
+      deleting: false,
+      viewing: false
     }
   },
 
@@ -38,11 +45,28 @@ export default {
     }
   },
 
+  methods: {
+    toggle () {
+      this.deleting = !this.deleting
+      this.$broadcast('toggle', this.deleting)
+    }
+  },
+
   events: {
     update (note) {
-      this.notes[note.index] = {text: note.text}
+      let d = new Date().toLocaleString()
+      this.notes[note.index] = {text: note.text, date: d}
       store.save(this.notes)
       this.count = store.fetch().length
+    },
+
+    viewing () {
+      this.viewing = true
+    },
+
+    refresh () {
+      this.deleting = false,
+      this.viewing = false
     },
 
     remove (note) {
@@ -53,17 +77,10 @@ export default {
 </script>
 
 <style>
-
   .header {
-    border-bottom: 2px solid #fea;
-    background-color: #fffbec;
-    padding-bottom: 5px;
-    padding-top: 5px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+    padding-top: 15px;
   }
 
-  .header-icon {
-    font-family: 'Inconsolata', sans-serif;
-    letter-spacing: 1px;
-    color: #fc0;
-  }
 </style>

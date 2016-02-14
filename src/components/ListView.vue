@@ -1,18 +1,15 @@
 <template>
-  <!-- Possibly turn list view into its own flexbox container with the previews being its items -->
   <div class="list-view">
     <div class="container">
       <div class="row">
         <div class="eight offset-by-two columns">
-
-          <center>
-            <!-- adds a new note, +1 to length of notes array -->
-            <button v-link="{ name: 'note', params: { index: count }}" >+</button>
-          </center>
-
-          <preview v-for="note in notes":note="note":text="note.text":index="$index"track-by="$index">
+          <preview v-for="note in notes"
+            :note="note"
+            :text="note.text"
+            :index="$index"
+             track-by="$index">
           </preview>
-          
+          <a class="add nav-button" v-link="{ name: 'note', params: { index: count }}">+ ADD NOTE</a>
         </div>
       </div>
     </div>
@@ -36,6 +33,12 @@ export default {
       required: true
     },
     count: Number
+  },
+
+  route: {
+    activate () {
+      this.$dispatch('refresh');
+    }
   }
 }
 </script>

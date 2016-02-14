@@ -3,13 +3,7 @@
     <div class="container">
       <div class="row">
         <div class="eight offset-by-two columns">
-          <a v-link="{ path: '/' }">BACK</a>
-          <hr>
-        </div>
-      </div>
-      <div class="row">
-        <div class="eight offset-by-two columns">
-          <textarea v-model="text" v-on:keyup="update"></textarea> 
+          <textarea v-model="text" v-on:keyup="update" placeholder="Type here."></textarea> 
         </div>
       </div>
     </div>
@@ -46,6 +40,11 @@ export default {
       n - ind >= 0 ? next() : abort()
     },
 
+    // on activate, send dispatch to App to render Back button on nav
+    activate () {
+      this.$dispatch('viewing');
+    },
+
     data ({ to }) {
       let ind = to.params.index
       let note = this.notes[ind]
@@ -76,9 +75,14 @@ export default {
   }
 
   textarea {
-    font-family: 'Inconsolata', sans-serif;
-    font-size: 14px;
     width: 100%;
     height: 500px;
+    border: none;
+    padding: 20px;
+  }
+
+  textarea:focus {
+    border: none;
+    outline: 0; 
   }
 </style>
