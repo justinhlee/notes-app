@@ -1,0 +1,29 @@
+body {
+  color: rgb(84, 84, 84);
+  font-family: 'Source Serif Pro', serif;
+  -moz-osx-font-smoothing: antialiased;
+  -webkit-font-smoothing: antialiased;
+}
+
+p {
+  color: rgb(84, 84, 84);
+  font-family: 'Source Serif Pro', serif;
+}
+
+.nav-button {
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 600;
+  letter-spacing: 1px;
+  font-size: 11px;
+  cursor: pointer;
+  color: #001bbc;
+}
+
+.nav-button:hover {
+  color: #001bbc;
+  opacity: 0.8;
+}
+
+a {
+  text-decoration: none;
+}
