@@ -3,6 +3,7 @@
     <div class="container">
       <div class="row">
         <div class="eight offset-by-two columns">
+
           <preview v-for="note in notes"
             :note="note"
             :text="note.text"

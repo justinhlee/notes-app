@@ -3,13 +3,29 @@
   <div class="header">
     <div class="container">
       <div class="row">
-        <div class="two offset-by-two columns">
+        <div class="eight offset-by-two columns">
           <a class="back nav-button" v-show="viewing" v-link="{ path: '/' }">BACK</a>
           <div v-else>
+            <div v-if="!blank">
             <a class="nav-button" v-show="deleting" v-on:click="toggle">CANCEL</a>
             <a class="nav-button" v-else v-on:click="toggle">EDIT</a>
+            </div>
+            <span v-else><br></span>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- intro blurb -->
+  <div v-show="blank" style="padding-top:25px;" class="container">
+    <div class="row">
+      <div class="eight offset-by-two columns">
+        <p>You can use this site to write down notes. <br>They'll be saved on this browser.</p> 
+        <p>Enjoy. 🤓 <br>
+        —<a class="nav-button" href="https://justinlee.io/">JL</a>
+        </p>
+
       </div>
     </div>
   </div>
@@ -30,7 +46,8 @@ export default {
       notes: store.fetch(),
       count: store.fetch().length,
       deleting: false,
-      viewing: false
+      viewing: false,
+      blank: true
     }
   },
 
@@ -61,10 +78,12 @@ export default {
     },
 
     viewing () {
-      this.viewing = true
+      this.viewing = true,
+      this.blank = false
     },
 
     refresh () {
+      this.blank = !(this.count > 0)
       this.deleting = false,
       this.viewing = false
     },
@@ -81,6 +100,10 @@ export default {
     border-bottom: 1px solid #eee;
     padding-bottom: 15px;
     padding-top: 15px;
+  }
+
+  .about {
+    float:right;
   }
 
 </style>
